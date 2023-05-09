@@ -1,3 +1,5 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.itwill.jsp1.model.Contact"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -5,12 +7,18 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>JSP</title>
+		<title>JSP</title>\
+        <style>
+            td, th, table {
+                border: 1px solid gray;
+                border-collapse: collapse;
+            }
+        </style>
 	</head>
 	<body>
 		<h1>JSTL</h1>
         <h2>JSP Standard Tag Library</h2>
-        <%-- JSTL 사용하기
+        <%-- JSTL 사용하기 (JSP Standard Tag Library)
             1. POM.xml 파일에 의존성(dependency) 추가(jstl:jstl:1.2) 
             2. JSTL을 사용하는 JSP 파일에서 taglib 지시문을 설정.
         --%>
@@ -38,6 +46,62 @@
             </c:forEach>
         </ul>
         
+        <h2>Table</h2>
+        <%-- 테이블에서 사용할 더미 데이터 --%>
+        <%
+        ArrayList<Contact> list = new ArrayList<>();
+        for(int i = 0; i < 5; i++) {
+            Contact c = new Contact(i, "이름_" + i, "phone_" + i, "email_" + i);
+            list.add(c);
+        }
+        
+        // 리스트를 EL에서 사용할 수 있도록 하기 위해서:
+        pageContext.setAttribute("contacts", list);
+        %>
+        
+        <h2>JSP 이용한 테이블 작성</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>                
+                    <th>name</th>                
+                    <th>phone</th>                
+                    <th>email</th>                
+                </tr> 
+            </thead>
+            <tbody>
+            <% for(Contact contact : list) { %>
+                <tr>
+                    <td><%= contact.getId() %></td>
+                    <td><%= contact.getName() %></td>
+                    <td><%= contact.getPhone() %></td>
+                    <td><%= contact.getEmail() %></td>
+                </tr>                         
+             <% } %>               
+            </tbody>       
+        </table>
+        
+        <h2>JSTL, EL 이용한 테이블 작성</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>                
+                    <th>name</th>                
+                    <th>phone</th>                
+                    <th>email</th>                
+                </tr> 
+            </thead>
+            <tbody>
+                <c:forEach items="${ contacts }" var="contact">
+                <tr>
+                    <td>${ contact.id }</td>
+                    <td>${ contact.name}</td>
+                    <td>${ contact.phone }</td>
+                    <td>${ contact.email }</td>
+                </tr>
+                 </c:forEach>                                    
+            </tbody>       
+        </table>
         
 	</body>
 </html>
