@@ -18,6 +18,8 @@ public class PostController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    System.out.println("postController.doGet()");
+	    
 	    request.getRequestDispatcher("/WEB-INF/post/post.jsp")
         .forward(request, response);
 	}

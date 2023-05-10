@@ -5,27 +5,23 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>POST</title>
+		<title>Post</title>
 	</head>
 	<body>
         <header>
-		  <h1>첫 번째 포스트 목록 페이지입니다!!!!</h1>
-        </header> 
+		  <h1>새 포스트 작성 페이지</h1>
+        </header>
         
         <nav>
             <ul>
                 <li>
-                    <%-- 상대경로에서 현재 폴더(/)의 의미: context root까지의 주소
-                         http://localhost:8081/post/
-                     --%>
                     <c:url var="mainPage" value="/"></c:url>
                     <a href="${ mainPage }">메인 페이지</a>
                 </li>
                 <li>
-                    <c:url var="postCreate" value="/post/create"></c:url>
-                    <a href="${ postCreate }">새 포스트 작성</a>
+                     <c:url var="postListPage" value="/post"></c:url>
+                    <a href="${ postListPage }">포스트 목록 페이지</a>
                 </li>
-                
             </ul>
         </nav>
 	</body>
