@@ -15,30 +15,30 @@ import com.itwill.post.model.Post;
 import com.itwill.post.service.PostService;
 
 /**
- * Servlet implementation class PostController
+ * Servlet implementation class InIdListController
  */
-@WebServlet(name = "postController", urlPatterns = {"/post"})
-public class PostController extends HttpServlet {
+@WebServlet(name = "inIdListController", urlPatterns = {"/post/detail"})
+public class InIdListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = LoggerFactory.getLogger(PostController.class);
 	
+	private static final Logger log = LoggerFactory.getLogger(CreateController.class);
+	    
 	private final PostService postService = PostService.getInstance();
 	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//	    System.out.println("postController.doGet()");
 	    log.info("doGet()");
 	    
-	    // 서비스 계층의 메서드를 호출해서 포스트 목록을 불러옴.
-	    List<Post> posts = postService.read();
+	    List<Post> posts = postService.readInId(Long.parseLong(request.getParameter("id")));
 	    
-	    // 포스트 목록을 JSP에게 전달.
 	    request.setAttribute("posts", posts);
 	    
-	    request.getRequestDispatcher("/WEB-INF/post/post.jsp")
-                .forward(request, response);
+	    request.getRequestDispatcher("/WEB-INF/post/detail.jsp")
+        .forward(request, response);
 	}
+
+	
 
 }

@@ -3,9 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>POST</title>
+    <head>
+        <meta charset="UTF-8">
+        <title>POST</title>
         
         <style>
             td, th, table {
@@ -14,10 +14,10 @@
             }
         </style>
         
-	</head>
-	<body>
+    </head>
+    <body>
         <header>
-		  <h1>첫 번째 포스트 목록 페이지입니다!!!!</h1>
+          <h1>디테일하게 보세요</h1>
         </header> 
         
         <nav>
@@ -43,6 +43,7 @@
                     <tr>
                         <th>번호</th>
                         <th>제목</th>
+                        <th>내용</th>
                         <th>작성자</th>
                         <th>수정 시간</th>
                     </tr>                   
@@ -57,13 +58,13 @@
                                 </c:url>
                                 <a href="${ postDetail }">${ post.title }</a>
                             </td>
+                            <td>${ post.content }</td>
                             <td>${ post.author }</td>
                             <td>${ post.modifiedTime }</td>
                         </tr>
-                        
                     </c:forEach>                    
                 </tbody>                
             </table>
         </main>
-	</body>
+    </body>
 </html>
