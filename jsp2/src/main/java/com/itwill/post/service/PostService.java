@@ -35,7 +35,7 @@ public class PostService {
         return postDao.select();
     }
     
-    public List<Post> readInId(long id) {
+    public Post readInId(long id) {
         log.info("readInId({})", id);
         
         return postDao.idSelector(id);
@@ -45,5 +45,41 @@ public class PostService {
         log.info("create({})", post);
         
         return postDao.insert(post);
+    }
+
+    public int delete(long id) {
+        log.info("delete(id={})", id);
+        
+        return postDao.delete(id);
+    }
+
+    public int update(Post post) {
+       log.info("update({})", post);
+        
+       return postDao.update(post);
+    }
+    
+    public List<Post> searchByTitle(String title) {
+        log.info("searchByTitle({})", title);
+        
+        return postDao.searchByTitle(title);
+    }
+    
+    public List<Post> searchByContent(String content) {
+        log.info("searchByContent({})", content);
+        
+        return postDao.searchByContent(content);
+    }
+    
+    public List<Post> searchByAuthor(String author) {
+        log.info("searchByAuthor({})", author);
+        
+        return postDao.searchByAuthor(author);
+    }
+    
+    public List<Post> searchByTitleOrContent(String keyword) {
+        log.info("searchByTitleOrContent({})", keyword);
+        
+        return postDao.searchByTitleOrContent(keyword);
     }
 }

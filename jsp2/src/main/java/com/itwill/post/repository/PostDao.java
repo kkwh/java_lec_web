@@ -77,12 +77,13 @@ public class PostDao {
         return list;
     }
     
-    public List<Post> idSelector(long id) {
-        List<Post> list = new ArrayList<>();
+    public Post idSelector(long id) {
+        Post post = null;
         
         String SQL_SELECT_ID =
                 "select * from POSTS where id = ?";
-        
+              
+        log.info("select(id={})", id);
         log.info(SQL_SELECT_ID);
         
         Connection conn = null;
@@ -98,10 +99,10 @@ public class PostDao {
             
             while(rs.next()) {
                 // 테이블 컬럼 내용을 Post 타입 객체로 변환하고 리스트에 추가:
-                Post post = recordToPost(rs);
-                list.add(post);
+                post = recordToPost(rs);
+                
             }
-            log.info("# of rows = {}", list.size());
+            /* log.info("# of rows = {}", list.size()); */
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,7 +118,7 @@ public class PostDao {
         
         
         
-        return list;
+        return post;
     }
 
     private Post recordToPost(ResultSet rs) throws SQLException {
@@ -165,4 +166,260 @@ public class PostDao {
         
         return result;
     }
+    
+    // 포스트 아이디(PK)로 삭제하기:
+    private static final String SQL_DELETE_BY_ID =
+             "delete from POSTS where ID = ?";
+    
+    public int delete(long id) {
+        log.info("delete(id={}", id);
+        log.info(SQL_DELETE_BY_ID);
+        
+        int result = 0; // SQL 실행 결과를 저장할 변수
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = ds.getConnection();
+            stmt = conn.prepareStatement(SQL_DELETE_BY_ID);
+            stmt.setLong(1, id);
+            result = stmt.executeUpdate();
+            
+        } catch (Exception e) {       
+            e.printStackTrace();
+        } finally {
+            try {
+                stmt.close();
+                conn.close();
+            } catch (Exception e) {        
+                e.printStackTrace();
+            }
+        }
+        
+        
+        return result;
+    }
+    
+    // 해당 아이디의 포스트의 제목과 내용, 수정 시간을 업데이트
+    private static final String SQL_UPDATE =
+            "update POSTS set TITLE = ?, CONTENT = ?, MODIFIED_TIME = sysdate where ID = ?";
+    
+    public int update(Post post) {
+        log.info("update({}", post);
+        log.info(SQL_UPDATE);
+        
+        int result = 0;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        
+        try {
+            conn = ds.getConnection();
+            stmt = conn.prepareStatement(SQL_UPDATE);
+            
+            stmt.setString(1, post.getTitle());
+            stmt.setString(2, post.getContent());
+            stmt.setLong(3, post.getId());
+            
+            result = stmt.executeUpdate();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                stmt.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }     
+        }
+        
+        return result;
+    }
+    
+    public List<Post> searchByTitle(String title) {
+        List<Post> list = new ArrayList<>();
+        
+        String SQL_SEARCH_TITLE =
+                "select * from POSTS where title like ?";
+              
+        log.info("select({})", title);
+        log.info(SQL_SEARCH_TITLE);
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ds.getConnection(); // 풀에서 Connection 객체를 빌려옴.
+            stmt = conn.prepareStatement(SQL_SEARCH_TITLE);
+            
+            String key = "%" + title + "%";
+            
+            stmt.setString(1, key);
+            rs = stmt.executeQuery();
+            
+            while(rs.next()) {
+                // 테이블 컬럼 내용을 Post 타입 객체로 변환하고 리스트에 추가:
+                Post post = recordToPost(rs);
+                list.add(post);
+                
+            }
+            /* log.info("# of rows = {}", list.size()); */
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+                conn.close(); // 물리적인 접속 해제가 아니라, 풀에 반환!
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        
+        
+        return list;
+    }
+    
+    public List<Post> searchByContent(String content) {
+        List<Post> list = new ArrayList<>();
+        
+        String SQL_SEARCH_CONTENT =
+                "select * from POSTS where content = ?";
+              
+        log.info("select({})", content);
+        log.info(SQL_SEARCH_CONTENT);
+        
+        String key = "%" + content + "%";
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ds.getConnection(); // 풀에서 Connection 객체를 빌려옴.
+            stmt = conn.prepareStatement(SQL_SEARCH_CONTENT);
+            
+            stmt.setString(1, key);
+            rs = stmt.executeQuery();
+            
+            while(rs.next()) {
+                // 테이블 컬럼 내용을 Post 타입 객체로 변환하고 리스트에 추가:
+                Post post = recordToPost(rs);
+                list.add(post);
+                
+            }
+            /* log.info("# of rows = {}", list.size()); */
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+                conn.close(); // 물리적인 접속 해제가 아니라, 풀에 반환!
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        
+        
+        return list;
+    } 
+    
+    public List<Post> searchByAuthor(String author) {
+        List<Post> list = new ArrayList<>();
+        
+        String SQL_SEARCH_AUTHOR =
+                "select * from POSTS where author = ?";
+              
+        log.info("select({})", author);
+        log.info(SQL_SEARCH_AUTHOR);
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ds.getConnection(); // 풀에서 Connection 객체를 빌려옴.
+            stmt = conn.prepareStatement(SQL_SEARCH_AUTHOR);
+            
+            String key = "%" + author + "%";
+            
+            stmt.setString(1, key);
+            rs = stmt.executeQuery();
+            
+            while(rs.next()) {
+                // 테이블 컬럼 내용을 Post 타입 객체로 변환하고 리스트에 추가:
+                Post post = recordToPost(rs);
+                list.add(post);
+                
+            }
+            /* log.info("# of rows = {}", list.size()); */
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+                conn.close(); // 물리적인 접속 해제가 아니라, 풀에 반환!
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        
+        
+        return list;
+    } 
+    
+    public List<Post> searchByTitleOrContent(String keyword) {
+        List<Post> list = new ArrayList<>();
+        
+        String SQL_SEARCH_KEYWORD =
+                "select * from POSTS where title = ? or content = ?";
+              
+        log.info("select({})", keyword);
+        log.info(SQL_SEARCH_KEYWORD);
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ds.getConnection(); // 풀에서 Connection 객체를 빌려옴.
+            stmt = conn.prepareStatement(SQL_SEARCH_KEYWORD);
+            
+            String key = "%" + keyword + "%";
+            
+            stmt.setString(1, key);
+            rs = stmt.executeQuery();
+            
+            while(rs.next()) {
+                // 테이블 컬럼 내용을 Post 타입 객체로 변환하고 리스트에 추가:
+                Post post = recordToPost(rs);
+                list.add(post);
+                
+            }
+            /* log.info("# of rows = {}", list.size()); */
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+                conn.close(); // 물리적인 접속 해제가 아니라, 풀에 반환!
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        
+        
+        return list;
+    } 
 }

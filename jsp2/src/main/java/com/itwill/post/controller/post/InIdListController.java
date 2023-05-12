@@ -31,9 +31,11 @@ public class InIdListController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    log.info("doGet()");
 	    
-	    List<Post> posts = postService.readInId(Long.parseLong(request.getParameter("id")));
+	    // 요청 URL의 쿼리스트링에 포함된 요청 파라미터 id(포스트번호, pk)값을 찾음.
+	    Post post = postService.readInId(Long.parseLong(request.getParameter("id")));
+	    log.info("id = {}", Long.parseLong(request.getParameter("id")));
 	    
-	    request.setAttribute("posts", posts);
+	    request.setAttribute("post", post);
 	    
 	    request.getRequestDispatcher("/WEB-INF/post/detail.jsp")
         .forward(request, response);
