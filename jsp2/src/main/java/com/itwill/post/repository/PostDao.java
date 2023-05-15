@@ -286,7 +286,7 @@ public class PostDao {
         List<Post> list = new ArrayList<>();
         
         String SQL_SEARCH_CONTENT =
-                "select * from POSTS where content = ?";
+                "select * from POSTS where content like ?";
               
         log.info("select({})", content);
         log.info(SQL_SEARCH_CONTENT);
@@ -333,7 +333,7 @@ public class PostDao {
         List<Post> list = new ArrayList<>();
         
         String SQL_SEARCH_AUTHOR =
-                "select * from POSTS where author = ?";
+                "select * from POSTS where author like ?";
               
         log.info("select({})", author);
         log.info(SQL_SEARCH_AUTHOR);
@@ -380,7 +380,7 @@ public class PostDao {
         List<Post> list = new ArrayList<>();
         
         String SQL_SEARCH_KEYWORD =
-                "select * from POSTS where title = ? or content = ?";
+                "select * from POSTS where title like ? or content like ?";
               
         log.info("select({})", keyword);
         log.info(SQL_SEARCH_KEYWORD);
