@@ -1,10 +1,15 @@
 package com.itwill.spring2.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.itwill.spring2.domain.Post;
+import com.itwill.spring2.dto.PostCreateDto;
+import com.itwill.spring2.dto.PostDetailDto;
+import com.itwill.spring2.dto.PostListDto;
+import com.itwill.spring2.dto.PostUpdateDto;
 import com.itwill.spring2.repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,27 +29,42 @@ public class PostService {
     //      (2) final 변수를 초기화할 수 있는 생성자를 작성
     
 //    @Autowired private PostRepository postRepository2; // 1. 필드에 의한 의존성 주입
-    private final PostRepository postRepository; // 2.(1) 생성자에 의한 의존성 주입
+    
+    private final PostRepository postRepository; //         2.(1) 생성자에 의한 의존성 주입
     
     // 포스트 목록 페이지
-    public List<Post> read() {
+    public List<PostListDto> read() {
         log.info("read()");
         
-        return postRepository.selectOrderByIdDesc();
+        List<Post> list = postRepository.selectOrderByIdDesc();
+        
+//        List<PostListDto> result = new ArrayList<>();
+//        for(Post p : list) {
+//            PostListDto dto = PostListDto.fromEntity(p);
+//            result.add(dto);
+//        }
+//        return result;
+//        -> 람다 스트림 표현식으로 한 줄 표현
+        
+        return list.stream().map(PostListDto::fromEntity).toList();
     }
     
     // 포스트 상세보기 페이지
-    public Post read(long id) {
+    public PostDetailDto read(long id) {
         log.info("read(id={})", id);
         
-        return postRepository.selectById(id);
+        Post entity = postRepository.selectById(id);
+        
+        return PostDetailDto.fromEntity(entity);
     }
     
     // 새 포스트 작성 페이지
-    public int create(Post post) {
-        log.info("create({})", post);
+    public int create(PostCreateDto dto) {
+        log.info("create({})", dto);
         
-        return postRepository.insert(post);
+        // PostCreateDto 타입을 Post 타입으로 변환해서
+        // 리포지토리 계층의 메서드를 호출 - DB Insert.
+        return postRepository.insert(dto.toEntity());
     }
     
     // 포스트 업데이트

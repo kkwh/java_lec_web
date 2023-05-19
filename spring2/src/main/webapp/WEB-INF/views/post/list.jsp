@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -12,40 +13,34 @@
                rel="stylesheet" 
                integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" 
                crossorigin="anonymous">
-        <style>
-            td, th, table {
-                border: 1px solid gray;
-                border-collapse: collapse;
-            }
-        </style>
 	</head>
 	<body>
 		<header class="my-2 p-5 text-center text-bg-dark">
             <h1>포스트 목록 페이지</h1>
         </header>
         
-        <nav>
-            <ul>
-                <li>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <ul class="navbar-nav bg-light">
+                <li class="nav-item">
                     <c:url var="mainPage" value="/" />
-                    <a href="${ mainPage }">메인 페이지</a>
+                    <a class="nav-link" href="${ mainPage }">메인 페이지</a>
                 </li>
                 <li>
                     <c:url var="postCreatePage" value="/post/create" />
-                    <a href="${ postCreatePage }">새 포스트 작성</a>
+                    <a class="nav-link" href="${ postCreatePage }">새 포스트 작성</a>
                 </li>
                 
             </ul>
         </nav>
         
         <main>
-            <div>
-                <table class="table table-striped table-hover">
+            <div class="card">
+                <table class="card-body table table-striped table-hover">
                     <thead>
                         <tr class="table-danger">
                             <th class="table-danger">번호</th>
                             <th>제목</th>
-                            <th>내용</th>
+                            <th>작성자</th>
                             <th>작성시간</th>
                         </tr>                        
                     </thead>
@@ -53,9 +48,17 @@
                         <c:forEach items="${ posts }" var="post" >
                             <tr>
                                 <td class="table-danger">${ post.id }</td>
-                                <td>${ post.title }</td>
-                                <td>${ post.content }</td>
-                                <td>${ post.created_time }</td>
+                                <td>
+                                    <c:url var="postDetailPage" value="/post/detail">
+                                        <c:param name="id" value="${ post.id }" />
+                                    </c:url>
+                                    <a href="${ postDetailPage }">${ post.title }</a>                                  
+                                </td>
+                                <td>${ post.author }</td>
+                                <td>
+                                <fmt:formatDate value="${ post.createdTime }"
+                                    pattern="yyyy-MM-dd HH:mm"/>                                   
+                               </td>
                             </tr>
                         </c:forEach>
                     </tbody>

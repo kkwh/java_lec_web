@@ -10,6 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.itwill.spring2.domain.Post;
+import com.itwill.spring2.service.PostService;
+import com.itwill.spring2.web.PostController;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,15 +25,26 @@ import lombok.extern.slf4j.Slf4j;
 public class RepositoryTest {
     
     @Autowired
-    private PostRepository postRepository;
+    private PostRepository postRepository;  
     
-    @Test
+//    @Autowired
+//    private PostController postController;
+    
+    @Autowired
+    private PostService postService;
+    
+//    @Test
+//    public void test1() {
+//        Assertions.assertNotNull(postRepository);
+//    }
+    
+    //@Test
     public void testDelete() {
         int result = postRepository.deleteById(2);
         Assertions.assertEquals(1, result);
     }
     
-    //@Test
+//    @Test
     public void testUpdate() {
         Post post = Post.builder()
                 .id(1) // 업데이트할 포스트 아이디
@@ -54,7 +67,7 @@ public class RepositoryTest {
         log.info("result = {}", result);
     }
     
-    //@Test
+    @Test
     public void testSelectOrderByIdDesc() {
         List<Post> list = postRepository.selectOrderByIdDesc();
         for(Post p : list) log.info(p.toString());
