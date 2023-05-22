@@ -23,7 +23,5 @@ public class Post {
     private String author;
     private LocalDateTime created_time;
     private LocalDateTime modified_time;
-    
-    
-    
+      
 }

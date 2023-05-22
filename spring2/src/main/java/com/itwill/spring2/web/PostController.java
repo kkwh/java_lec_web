@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itwill.spring2.domain.Post;
 import com.itwill.spring2.dto.PostCreateDto;
-import com.itwill.spring2.dto.PostDeleteDto;
 import com.itwill.spring2.dto.PostDetailDto;
 import com.itwill.spring2.dto.PostListDto;
 import com.itwill.spring2.dto.PostUpdateDto;
@@ -78,10 +77,10 @@ public class PostController {
     }
     
     @PostMapping("/update")
-    public String update(Post post) {
-        log.info("update(dto = {})", post);
+    public String update(PostUpdateDto dto) {
+        log.info("update(dto = {})", dto);
         
-        int result = postService.update(post);       
+        int result = postService.update(dto);       
         log.info("포스트 업데이트 결과 = {}", result);
         
         return "redirect:/post/list";

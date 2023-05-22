@@ -13,7 +13,7 @@ import lombok.Data;
 @Builder
 public class PostDetailDto {
     
-    
+    private long id;
     private String title;
     private String content;
     private String author;
