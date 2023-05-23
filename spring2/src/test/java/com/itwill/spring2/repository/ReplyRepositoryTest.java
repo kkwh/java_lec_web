@@ -55,8 +55,7 @@ public class ReplyRepositoryTest {
                 .build();
         int result = replyRepository.insert(entity);
         log.info("result = {}", result);
-                
-                       
+                                       
     }
     
 //    @Test
