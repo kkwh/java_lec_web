@@ -1,0 +1,4 @@
+ 인코딩, 탬플릿, 폰트, tab 설정 
+ src/main/resources 파일에 mappers 폴더 있는지 체크
+ 서버 포트설정 5000, 서블렛-컨택트, 앱-컨택트 확인 (주소 확인)
+ 자바 폴더 mvc+service+repository+dto 유무 전부 확인(test 파일)
