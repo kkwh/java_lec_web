@@ -12,7 +12,7 @@ pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 			integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
 			crossorigin="anonymous">
 	</head>
-	<body style="background-color: black; color: white;">
+	<body>
 		<div>
         <header class="my-1 p-3 text-bg-dark">
             <div>

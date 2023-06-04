@@ -13,9 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class AdminController {
 	
-	@GetMapping
-	public void Admain() {
-		log.info("Admain()");
+	@GetMapping("/adminMain")
+	public void AdmainMain() {
+		log.info("AdmainMain()");
 	}
+	
+	
 
 }
