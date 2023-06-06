@@ -18,20 +18,34 @@ document.addEventListener('DOMContentLoaded', function () {
     
     sameOrderer.addEventListener('click', () => {
         
-        document.getElementById("name2").value = inputName;
+        document.getElementById("name2").value = inputName; // 인풋의 값을 주문자 정보와 같게 입력
         document.getElementById("postCode2").value = inputPostCode;
         document.getElementById("addr2").value = inputAddr;
         document.getElementById("detailAddr2").value = inputDetailAddr;
         document.getElementById("phone2").value = inputPhone;
+        
+        document.getElementById("searchCode").disabled = true;  // 우편번호 찾기 비활성화
+        document.getElementById("name2").readOnly = true;   // readonly 활성화
+        document.getElementById("postCode2").readOnly = true;
+        document.getElementById("addr2").readOnly = true;
+        document.getElementById("detailAddr2").readOnly = true;
+        document.getElementById("phone2").readOnly = true;
     });
     
     newInput.addEventListener('click', () => {
        
-        document.getElementById("name2").value = "";
+        document.getElementById("name2").value = ""; // 인풋의 값을 빈문자열로 초기화
         document.getElementById("postCode2").value = "";
         document.getElementById("addr2").value = "";
         document.getElementById("detailAddr2").value = "";
         document.getElementById("phone2").value = "";
+        
+        console.log('readOnly false');
+        
+        document.getElementById("searchCode").disabled = false; // 우편번호 찾기 활성화
+        document.getElementById("name2").readOnly = false;  // readonly 비활성화, input에 입력 가능
+        document.getElementById("detailAddr2").readOnly = false;
+        document.getElementById("phone2").readOnly = false;
     });
     
 });

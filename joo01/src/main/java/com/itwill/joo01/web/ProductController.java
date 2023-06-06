@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/product") // "/post" 로 시작하는 주소 다처리
 @Controller
 public class ProductController {
-
+    
 	@GetMapping("/productsList")
 	public void productList() {
 		
@@ -43,7 +43,7 @@ public class ProductController {
 	public void productOrder(Model model) {
 	log.info("productOrder()");
         
-    User user1 = new User(1, "hong", 11234, "korea", "seoul", "010-1234-5678", "hong@daum.net", 9999);
+    User user1 = new User(1, "hong", 11234, "korea", "seoul", "010-1234-5678", "hong@daum.net", 11000);
     Product product1 = new Product(1, "https://cdn.econovill.com/news/photo/202305/613036_551446_335.png", "전통주 1", 30000, 1);
         
     // 뷰에 보여줄 데이터를 Model에 저장.

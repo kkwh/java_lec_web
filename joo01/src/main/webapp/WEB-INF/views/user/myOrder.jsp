@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +8,7 @@
 <!-- 부트스트랩 -->
 <title>JOO</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<link rel="stylesheet" href="../static/css/myOrder.css">
 <style>
     .container {
   display: flex;
@@ -62,39 +64,41 @@
                     </div>
                 </nav>
             </div>
+        </header>
+        
                 <div class="container">
                     <h3 class="order-history">
-                        <a href="/joo01/user/myOrder" class="btn btn-outline-primary col-12 mx-auto">주문 내역 조회</a>
+                        <button id="btnOrder" class="btn btn-outline-primary col-12 mx-auto">주문 내역 조회</button>
                     </h3>
                     <h3 class="cancel-history">
-                        <a href="/joo01/user/myOrder" class="btn btn-outline-primary col-12 mx-auto">취소 내역 조회</a>
+                        <button id="btnCancel" class="btn btn-outline-primary col-12 mx-auto">취소 내역 조회</button>
                     </h3>
                 </div>
-        </header>
-
+                
         <div class="order-filter">
             <div class="order-filter-period">
-                <div class="order-filter-period__tab">
-                    <button type="button" class="order-filter-period__tab__button" data-period="1year" onClick="OrderFilter.setPeriod('1year');">1주일</button>
-                    <button type="button" class="order-filter-period__tab__button" data-period="1week" onClick="OrderFilter.setPeriod('1week');">1개월</button>
-                    <button type="button" class="order-filter-period__tab__button" data-period="1month" onClick="OrderFilter.setPeriod('1month');">3개월</button>
-                    <button type="button" class="order-filter-period__tab__button" data-period="3month" onClick="OrderFilter.setPeriod('3month');">6개월</button>
+                <div class="order-filter-period__button">
+                    <button type="button" class="order-filter-period__tab__button">1주일</button>
+                    <button type="button" class="order-filter-period__tab__button">1개월</button>
+                    <button type="button" class="order-filter-period__tab__button">3개월</button>
+                    <button type="button" class="order-filter-period__tab__button">6개월</button>
                 </div>
                 <div class="order-filter-period__date">
                     <div class="order-filter-period__input-wrap">
-                        <input type="date" class="order-filter-period__input" name="dt_fr_input" value="" placeholder="-" onchange="checkDateFormat(this);">
+                        <input type="date" class="order-filter-period__input" name="dt_fr_input" value="" placeholder="-">
                     </div>
                     <div class="order-filter-period__input-wrap">
-                        <input type="date" class="order-filter-period__input" name="dt_to_input" value="" placeholder="-" onchange="checkDateFormat(this);">
+                        <input type="date" class="order-filter-period__input" name="dt_to_input" value="" placeholder="-">
                     </div>
                 </div>
+                <button type="button" class="order-filter-confirm ">조회하기</button>
             </div>
-            <button type="button" class="order-filter-confirm" onclick="search();">조회하기</button>
         </div>
-
-        <table class="n-table table-col n-order-view" width="100%">
+        
+        <!-- 주문 내역 조회 테이블 -->
+        <table id="order-table" class="n-table table-col n-order-view" width="100%">
             <colgroup>
-                <col style="width: *">
+                
                 <col style="width: 14.2%">
                 <col style="width: 14.2%">
                 <col style="width: 14.2%">
@@ -112,26 +116,91 @@
             </thead>
 
             <tbody>
+                 <c:forEach items="${ products }" var="product" >
+                 <c:set var="cancelComple" value="취소 완료" />
+                 <c:if test="${product.orderedStatus ne cancelComple }">
                 <tr>
                     <td>
                         <div class="n-prd-row">
-                            <a href="/joo01/product/productDetail" class="img-block"> <img src="https://cdn.econovill.com/news/photo/202305/613036_551446_335.png" alt="전통주 1번" width="100">
-                            </a>전통주
+                            <a href="/joo01/product/productDetail" class="img-block"> <img src="${ product.image }" alt="전통주" width="100">
+                            </a>${ product.productName }
                         </div>
                     </td>
-                    <td>1</td>
                     <td>
-                        <a href="/joo01/product/productDetail">KRW 10,000</a>
+                        ${ product.stock }개
                     </td>
-                    <td>2023.05.31</td>                   
+                    <td>
+                        KRW ${ product.price }</a>
+                    </td>
+                    <td>
+                        ${ product.orderedDate }
+                    </td>                   
                     <td class="txt-lighter">
                         <div class="btn-set btn-parents">
-                            <!-- 클레임 없음 -->
+                                ${ product.orderedStatus }
+                                <a href="https://tracker.delivery/#/kr.epost/6113101024721" target="_blank">
+                                    <button type="button" class="btn btn-primary btn-sm float-right ml-2" 
+                                            onclick="openWindowWithPosition('https://tracker.delivery/#/kr.epost/6113101024721')">배송조회
+                                    </button>
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm float-right">주문취소</button>
 
-                            구매 완료
+                           
                         </div>
                     </td>
                 </tr>
+                </c:if>
+                </c:forEach>
+            </tbody>
+        </table>
+        
+        <!-- 취소 내역 조회 테이블 -->
+        <table id="cancel-table" class="n-table table-col n-order-view" width="100%" style="display: none;">
+            <colgroup>
+                <col style="width: 14.2%">
+                <col style="width: 14.2%">
+                <col style="width: 14.2%">
+                <col style="width: 10.2%">
+                <col style="width: 11%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th scope="col">상품정보</th>
+                    <th scope="col">수량</th>
+                    <th scope="col">금액</th>
+                    <th scope="col">취소일자</th>
+                    <th scope="col" colspan="2">주문 상태</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                 <c:forEach items="${ products }" var="product" >
+                 <c:if test="${product.orderedStatus eq cancelComple }">
+                <tr>
+                    <td>
+                        <div class="n-prd-row">
+                            <a href="/joo01/product/productDetail" class="img-block"> <img src="${ product.image }" alt="전통주" width="100">
+                            </a>${ product.productName }
+                        </div>
+                    </td>
+                    <td>
+                        ${ product.stock }개
+                    </td>
+                    <td>
+                        KRW ${ product.price }</a>
+                    </td>
+                    <td>
+                        ${ product.orderedDate }
+                    </td>                   
+                    <td class="txt-lighter">
+                        <div class="btn-set btn-parents">
+                                ${ product.orderedStatus }
+                           
+                        </div>
+                    </td>
+                </tr>
+                </c:if>
+                </c:forEach>
             </tbody>
         </table>
 
@@ -143,6 +212,7 @@
         </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+        <script src="../static/js/productOrder/myOrder.js"></script>
     </div>
 </body>
 </html>

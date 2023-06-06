@@ -230,13 +230,14 @@ body {
                         <div class="my-2">
                             <input class="form-control" id="name2"
                                 value="${ user.name }"
-                                placeholder="수령자 성함" readonly/>
+                                placeholder="수취인 성함" readonly/>
                         </div>
+                        <input type="button" onclick="searchPostCode()" value="우편번호 찾기" id="searchCode" disabled /><br>
                         <div class="my-2">
                             <input class="form-control" id="postCode2"
                                 value="${ user.postCode }"
                                 placeholder="우편번호" readonly/>
-                        </div>
+                        </div>                        
                         <div class="my-2">
                             <input class="form-control" id="addr2"
                                 value="${ user.addr }" placeholder="주소" readonly/>
@@ -360,6 +361,8 @@ body {
             crossorigin="anonymous">
         </script>
         <script src="../static/js/productOrder/productOrder.js"></script>
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <script src="../static/js/productOrder/searchPostCode.js"></script>
 
     </div>
 </body>
