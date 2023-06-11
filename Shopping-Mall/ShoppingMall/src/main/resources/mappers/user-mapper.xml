@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwill.joo.repository.UserRepository">
+    
+    <select id="selectUser" resultType="com.itwill.joo.domain.User">
+    	select * from USERS
+    	where LOGIN_ID = #{login_id}
+    </select>
+    
+    <insert id="createUser">
+    	insert into USERS (LOGIN_ID, UPASSWORD, UEMAIL, UPHONE, UNAME, USTREET, UDETAIL_ADDRESS, UPOSTCODE, ROLE, CREATED_TIME, MODIFIED_TIME)
+    	values(#{login_id}, #{upassword}, #{uemail}, #{uphone}, #{uname}, #{ustreet}, #{udetail_address}, #{upostcode}, #{role}, systimestamp, systimestamp)
+    </insert>
+    
+</mapper>
