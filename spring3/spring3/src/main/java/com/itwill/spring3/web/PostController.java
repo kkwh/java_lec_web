@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itwill.spring3.dto.PostCreateDto;
+import com.itwill.spring3.dto.PostSearchDto;
 import com.itwill.spring3.dto.PostUpdateDto;
 import com.itwill.spring3.repository.post.Post;
+import com.itwill.spring3.repository.reply.Reply;
 import com.itwill.spring3.service.PostService;
+import com.itwill.spring3.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PostController {
     
     private final PostService postService;
+    private final ReplyService replyService;
     
     @GetMapping
     public String post(Model model) {
@@ -60,9 +64,17 @@ public class PostController {
         
         // TODO: id로 Posts 테이블에서 id에 해당하는 포스트를 검색.
         Post post = postService.read(id);
+        
+        // REPLIES 테이블에서 해당 포스트에 달린 댓글 개수를 검색.
+        List<Reply> replyList = replyService.read(post);
+//        model.addAttribute("replyCount", replyList.size());
                
         // 결과를 model에 저장 -> 뷰로 전달됨.   
         model.addAttribute("post", post);
+        
+        // REPLIES 테이블에서 해당 포스트에 달린 댓글 개수를 검색
+        long count = replyService.countByPost(post);
+        model.addAttribute("replyCount", count);
         
         // 컨트롤러 메서드의 리턴값이 없는 경우(void인 경우),
         // 뷰의 이름은 요청 주소와 같다!
@@ -75,7 +87,7 @@ public class PostController {
         
         postService.update(dto);
         
-        return "redirect:/post";
+        return "redirect:/post/details?id=" + dto.getId();
     }
     
     @PostMapping("/delete")
@@ -85,5 +97,18 @@ public class PostController {
         postService.delete(id);
         
         return "redirect:/post";
+    }
+    
+    @GetMapping("/search")
+    public String search(PostSearchDto dto, Model model) {
+        log.info("search(dto={})", dto);
+        
+        // postService의 검색 기능 호출:
+        List<Post> list = postService.search(dto);
+        
+        // 검색 결과를 Model에 저장해서 뷰로 전달:
+        model.addAttribute("posts", list);
+        
+        return "/post/read";
     }
 }

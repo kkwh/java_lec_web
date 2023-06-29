@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class PostUpdateDto {
+    private Long id;
     
     private String title;
     private String content;
@@ -16,7 +17,6 @@ public class PostUpdateDto {
         return Post.builder()
                 .title(title)
                 .content(content)
-                .author("admin")
                 .build();
     }
 }
