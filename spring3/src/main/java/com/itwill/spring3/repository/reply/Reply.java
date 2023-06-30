@@ -12,12 +12,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @NoArgsConstructor
 @Getter
+@Setter
+@AllArgsConstructor
+@Builder
 @ToString(exclude = {"post"})
 @Entity
 @Table(name = "REPLIES")
@@ -29,7 +35,7 @@ public class Reply extends BaseTimeEntity {
     private Long id; // Primary Key
     
     @ManyToOne(fetch = FetchType.LAZY) // EAGER(기본값): 즉시로딩. LAZY: 지연로딩.
-    // Many = Reply, One = Post인 경우
+    // Many(다) = Reply, One(1) = Post인 경우
     private Post post; // Foreign Key, 관계를 맺고 있는 엔티티.
     
     @Column(nullable = false) // Not Null
@@ -37,4 +43,11 @@ public class Reply extends BaseTimeEntity {
     
     @Column(nullable = false) // Not Null
     private String writer; // 댓글 작성자
+    
+    // 댓글 내용을 수정하고, 수정된 엔터티를 리턴하는 메서드:
+    public Reply update(String replyText) {
+        this.replyText = replyText;
+        
+        return this;
+    }
 }

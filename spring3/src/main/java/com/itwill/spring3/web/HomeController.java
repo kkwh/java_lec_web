@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.itwill.spring3.config.SecurityConfig;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -18,6 +20,7 @@ public class HomeController {
         
         LocalDateTime now = LocalDateTime.now();
         model.addAttribute("now", now);
+        
         
         return "/main/index"; // View의 이름.
     }
